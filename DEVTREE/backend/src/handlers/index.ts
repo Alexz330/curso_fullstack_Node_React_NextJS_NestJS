@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
+import slug from "slug";
 import { hashPassword } from "../utils/auth";
-
 import User from "../models/User";
 
 export const createAccount = async (req: Request, res: Response) => {
-    const { email } = req.body;
+    const { email, password } = req.body;
 
     try {
         const userExists = await User.findOne({ email });
@@ -13,7 +13,17 @@ export const createAccount = async (req: Request, res: Response) => {
             const error = new Error("El usuario ya está registrado");
             error.name = "UserExistsError";
             res.status(409).json({ error: error.message });
-            return
+            return;
+        }
+
+        const handle = slug(req.body.handle, '');
+        const handleExists = await User.findOne({ handle });
+
+        if (handleExists) {
+            const error = new Error("Nombre de usuario no disponible");
+            error.name = "UserExistsError";
+            res.status(409).json({ error: error.message });
+            return;
         }
 
         const user = new User(req.body);
@@ -21,14 +31,15 @@ export const createAccount = async (req: Request, res: Response) => {
         const hash = await hashPassword(user.password as string);
 
         user.password = hash;
-        await user.save();
-        console.log("Respuesta: usuario creado");
+        user.handle = handle;
 
-        res.status(201).json({ message: 'User created successfully', user: user.toObject() });
+
+        await user.save();
+
+        res.status(201).json({ message: 'Usuario creado exitosamente' });
     } catch (error) {
-        console.log("Respuesta: error al crear el usuario");
         res.status(400).json({
-            error: error instanceof Error ? error.message : "An unknown error occurred"
+            error: error instanceof Error ? error.message : "Un error inesperado ocurrió"
         });
     }
 };
