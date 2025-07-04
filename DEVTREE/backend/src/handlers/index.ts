@@ -5,14 +5,6 @@ import { hashPassword, checkPassword } from "../utils/auth";
 import User from "../models/User";
 
 export const createAccount = async (req: Request, res: Response) => {
-  // Manjear errores
-  let errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() });
-    return;
-  }
-
   const { email } = req.body;
 
   try {
@@ -54,14 +46,6 @@ export const createAccount = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  // Manjear errores
-  let errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() });
-    return;
-  }
-
   try {
     const { email, password } = req.body;
 
@@ -84,11 +68,11 @@ export const login = async (req: Request, res: Response) => {
       return;
     }
 
-    
     res.status(200).json({ message: "Login exitoso" });
   } catch (error) {
     res.status(500).json({
-      error: error instanceof Error ? error.message : "Ocurrió un error inesperado"
+      error:
+        error instanceof Error ? error.message : "Ocurrió un error inesperado",
     });
   }
 };

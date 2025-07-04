@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createAccount, login } from "./handlers";
 import { check } from "express-validator";
+import { handleInputErrors } from "./middleware/validation";
 const router = Router();
 /** Autenticacion y registro  */
 
@@ -20,6 +21,7 @@ router.post(
     .withMessage(
       "Por favor ingresa un handle de usuario con al menos 3 caracteres"
     ),
+    handleInputErrors,
   createAccount
 );
 
@@ -31,7 +33,7 @@ router.post(
   check("password")
     .notEmpty()
     .withMessage("EL password es obligatorio"),
-
+    handleInputErrors,
   login
 );
 
