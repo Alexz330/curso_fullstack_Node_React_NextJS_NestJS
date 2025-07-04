@@ -6,6 +6,9 @@ const router = Router();
 
 router.post(
   "/auth/register",
+  check("name")
+    .isLength({ min: 3 })
+    .withMessage("Por favor ingresa un nombre con al menos 3 caracteres"),
   check("email")
     .isEmail()
     .withMessage("Por favor ingresa un correo electrónico válido"),
