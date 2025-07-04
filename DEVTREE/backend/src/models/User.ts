@@ -1,5 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
+interface User {
+  name: string;
+  email: string;
+  password: string;
+}
+
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -19,5 +26,5 @@ const userSchema = new Schema({
 });
 
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<User>("User", userSchema);
 export default User;
