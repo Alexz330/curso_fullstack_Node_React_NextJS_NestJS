@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAccount } from "./handlers";
+import { createAccount, login } from "./handlers";
 import { check } from "express-validator";
 const router = Router();
 /** Autenticacion y registro  */
@@ -21,6 +21,18 @@ router.post(
       "Por favor ingresa un handle de usuario con al menos 3 caracteres"
     ),
   createAccount
+);
+
+router.post(
+  "/auth/login",
+  check("email")
+    .isEmail()
+    .withMessage("Por favor ingresa un correo electrónico válido"),
+  check("password")
+    .notEmpty()
+    .withMessage("EL password es obligatorio"),
+
+  login
 );
 
 export default router;
