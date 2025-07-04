@@ -18,7 +18,7 @@ router.post(
   check("handle")
     .isLength({ min: 3 })
     .withMessage(
-      "Por favor ingresa un nombre de usuario con al menos 3 caracteres"
+      "Por favor ingresa un handle de usuario con al menos 3 caracteres"
     ),
   createAccount
 );
