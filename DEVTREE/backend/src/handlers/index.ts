@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import slug from "slug";
-import { validationResult } from "express-validator";
 import { hashPassword, checkPassword } from "../utils/auth";
 import User from "../models/User";
-import { generateJWT, verifyJWT } from "../utils/jwt";
+import { generateJWT } from "../utils/jwt";
 
 export const createAccount = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -80,44 +79,5 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: Request, res: Response) => {
-  const bearer = req.headers.authorization;
-  if (!bearer) {
-    const error = new Error("No autorizado");
-    error.name = "UnauthorizedError";
-    res.status(401).json({ error: error.message });
-    return;
-  }
-  const token = bearer?.split(" ")[1];
-
-  if (!token) {
-    const error = new Error("No autorizado");
-    error.name = "UnauthorizedError";
-    res.status(401).json({ error: error.message });
-    return;
-  }
-  try {
-    const result = verifyJWT(token);
-    if (!result) {
-      const error = new Error("No autorizado");
-      error.name = "UnauthorizedError";
-      res.status(401).json({ error: error.message });
-      return;
-    }
-    if (typeof result === "object" && result.id) {
-      const user = await User.findById(result.id).select("-password");
-      if (!user) {
-        const error = new Error("No autorizado");
-        error.name = "UnauthorizedError";
-        res.status(401).json({ error: error.message });
-        return;
-      }
-      res.status(200).json({ user });
-      return;
-    }
-  } catch (error) {
-    res.status(500).json({
-      error: error instanceof Error ? error.message : "Token No valido",
-    });
-    return;
-  }
+ res.json(req.user);
 };
