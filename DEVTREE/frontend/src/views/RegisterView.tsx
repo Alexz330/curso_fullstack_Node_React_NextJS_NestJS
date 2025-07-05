@@ -16,7 +16,7 @@ export default function RegisterView() {
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
-  console.log(errors);
+  const password = watch("password");
   const handleSubmitRegister = (data: any) => {
     console.log(data);
   };
@@ -50,11 +50,14 @@ export default function RegisterView() {
           </label>
           <input
             id="email"
-            type="email"
             placeholder="Email de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("email", {
               required: "Tu email es obligatorio",
+              pattern: {
+                value: /^[^@]+@[^@]+\.[^@]+$/,
+                message: "Email no válido",
+              },
             })}
           />
           {errors.email && (
@@ -89,6 +92,10 @@ export default function RegisterView() {
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password", {
               required: "El password es obligatorio",
+              minLength: {
+                value: 6,
+                message: "El password debe tener al menos 6 caracteres",
+              },
             })}
           />
           {errors.password && (
@@ -109,11 +116,15 @@ export default function RegisterView() {
             placeholder="Repetir Password"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password_confirmation", {
-              required: "Repite el password",
+              required: "Repetir Password es obligatorio",
+              validate: (value) =>
+                value === password || "Los passwords no coinciden",
             })}
           />
           {errors.password_confirmation && (
-            <ErrorMessage>{String(errors.password_confirmation?.message)}</ErrorMessage>
+            <ErrorMessage>
+              {String(errors.password_confirmation?.message)}
+            </ErrorMessage>
           )}
         </div>
 
