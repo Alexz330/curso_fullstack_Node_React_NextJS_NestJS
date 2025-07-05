@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import ErrorMessage from "../components/ErrorMessage";
 import type { RegisterForm } from "../types";
+import api from "../config/axios";
 
 export default function RegisterView() {
   const initialValues: RegisterForm = {
@@ -25,14 +26,10 @@ export default function RegisterView() {
 
   const handleSubmitRegister = async (formData: RegisterForm) => {
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/register`,
-        formData
-      );
+      const { data } = await api.post(`/api/auth/register`, formData);
       toast.success(data.message);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console
         toast.error(error.response?.data.error);
       }
     }
