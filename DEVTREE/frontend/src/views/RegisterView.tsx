@@ -25,7 +25,7 @@ export default function RegisterView() {
   const handleSubmitRegister = async (formData: RegisterForm) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/auth/register",
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
         formData
       );
       console.log(data);
