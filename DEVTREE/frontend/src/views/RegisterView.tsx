@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { toast } from "sonner";
 import ErrorMessage from "../components/ErrorMessage";
 import type { RegisterForm } from "../types";
 
@@ -28,10 +29,11 @@ export default function RegisterView() {
         `${import.meta.env.VITE_API_URL}/api/auth/register`,
         formData
       );
-      console.log(data);
+      toast.success(data.message);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.log(error.response?.data);
+        console
+        toast.error(error.response?.data.error);
       }
     }
   };
