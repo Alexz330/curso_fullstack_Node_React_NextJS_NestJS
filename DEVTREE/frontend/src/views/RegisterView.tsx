@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function RegisterView() {
+  const initialValues = {
+    name: "",
+    email: "",
+    handle: "",
+    password: "",
+    password_confirmation: "",
+  };
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: initialValues });
   console.log(errors);
   const handleSubmitRegister = (data: any) => {
     console.log(data);
@@ -32,7 +40,9 @@ export default function RegisterView() {
               required: "Tu nombre es obligatorio",
             })}
           />
-          {errors.name && String(errors.name?.message)}
+          {errors.name && (
+            <ErrorMessage>{String(errors.name?.message)}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="email" className="text-2xl text-slate-500">
@@ -47,6 +57,9 @@ export default function RegisterView() {
               required: "Tu email es obligatorio",
             })}
           />
+          {errors.email && (
+            <ErrorMessage>{String(errors.email?.message)}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="handle" className="text-2xl text-slate-500">
@@ -61,6 +74,9 @@ export default function RegisterView() {
               required: "El handle es obligatorio",
             })}
           />
+          {errors.handle && (
+            <ErrorMessage>{String(errors.handle?.message)}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="password" className="text-2xl text-slate-500">
@@ -75,6 +91,9 @@ export default function RegisterView() {
               required: "El password es obligatorio",
             })}
           />
+          {errors.password && (
+            <ErrorMessage>{String(errors.password?.message)}</ErrorMessage>
+          )}
         </div>
 
         <div className="grid grid-cols-1 space-y-3">
@@ -93,6 +112,9 @@ export default function RegisterView() {
               required: "Repite el password",
             })}
           />
+          {errors.password_confirmation && (
+            <ErrorMessage>{String(errors.password_confirmation?.message)}</ErrorMessage>
+          )}
         </div>
 
         <input
