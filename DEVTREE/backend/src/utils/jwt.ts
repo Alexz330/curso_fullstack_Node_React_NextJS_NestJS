@@ -6,3 +6,12 @@ export const generateJWT = (payload: JwtPayload) => {
     });
     return token;
 };
+
+export const verifyJWT = (token: string) => {
+    try {
+        const decoded = JWT.verify(token, process.env.JWT_SECRET as string);
+        return decoded;
+    } catch (error) {
+        return null;
+    }
+};
