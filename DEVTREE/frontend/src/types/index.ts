@@ -13,3 +13,5 @@ export type RegisterForm = Pick<User, "handle" | "email" | "name"> & {
 };
 
 export type LoginForm = Pick<User, "email" | "password">;
+
+export type ProfileForm = Pick<User, "handle" | "description">;
