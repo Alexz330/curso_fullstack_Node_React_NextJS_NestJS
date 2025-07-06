@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createAccount, getUser, login } from "./handlers";
-import { check } from "express-validator";
+import { createAccount, getUser, login, updateProfile } from "./handlers";
+import { check, body } from "express-validator";
 import { handleInputErrors } from "./middleware/validation";
 import { authenticate } from "./middleware/auth";
 const router = Router();
@@ -22,7 +22,7 @@ router.post(
     .withMessage(
       "Por favor ingresa un handle de usuario con al menos 3 caracteres"
     ),
-    handleInputErrors,
+  handleInputErrors,
   createAccount
 );
 
@@ -31,13 +31,22 @@ router.post(
   check("email")
     .isEmail()
     .withMessage("Por favor ingresa un correo electrónico válido"),
-  check("password")
-    .notEmpty()
-    .withMessage("EL password es obligatorio"),
-    handleInputErrors,
+  check("password").notEmpty().withMessage("EL password es obligatorio"),
+  handleInputErrors,
   login
 );
 
-router.get('/user', authenticate, getUser);
+router.get("/user", authenticate, getUser);
+
+router.patch(
+  "/user",
+
+  body("handle").notEmpty().withMessage("El handle es obligatorio"),
+  body("description").notEmpty().withMessage("La descripción es obligatoria"),
+  handleInputErrors,
+
+  authenticate,
+  updateProfile
+);
 
 export default router;
