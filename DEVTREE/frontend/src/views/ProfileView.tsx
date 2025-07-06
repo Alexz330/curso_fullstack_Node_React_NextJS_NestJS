@@ -24,6 +24,7 @@ export default function ProfileView() {
     },
     onSuccess: () => {
      toast.success("Perfil actualizado correctamente");
+     queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 
