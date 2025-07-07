@@ -23,3 +23,19 @@ export async function updateProfile(user: ProfileForm) {
     }
   }
 }
+
+
+export async function uploadImage(image: File) {
+  let formData =  new FormData();
+  formData.append("file", image);
+
+  try {
+    const { data } = await api.post<{ image: string }>(`/api/user/image`, formData);
+    console.log(data);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(error.response?.data.error);
+    }
+  }
+}

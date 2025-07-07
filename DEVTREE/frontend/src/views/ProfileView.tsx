@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "../components/ErrorMessage";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import type { User, ProfileForm } from "../types";
-import { updateProfile } from "../api/DevTreeAPI";
+import { updateProfile, uploadImage } from "../api/DevTreeAPI";
 import { toast } from "sonner";
 
 export default function ProfileView() {
@@ -28,9 +28,27 @@ export default function ProfileView() {
     },
   });
 
+
+  const uploadImageMutation = useMutation({
+    mutationFn: uploadImage,
+    onError: (error) => {
+    },
+    onSuccess: () => {
+    
+    },
+  });
+
   const handleUserProfileForm = (formData: ProfileForm) => {
     updateProfileMutation.mutate(formData);
   };
+
+  const handleChangeImage = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    if(e.target.files){
+      const file = e.target.files[0];
+      uploadImageMutation.mutate(file);
+    }
+  
+  }
   return (
     <form
       className="bg-white p-10 rounded-lg space-y-5"
@@ -76,7 +94,7 @@ export default function ProfileView() {
           name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
-          onChange={() => {}}
+          onChange={handleChangeImage}
         />
       </div>
 
