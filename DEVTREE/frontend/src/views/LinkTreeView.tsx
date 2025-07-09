@@ -1,12 +1,26 @@
 import { useState } from "react";
+import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { validateUrl } from "../utils";
 import { social } from "../data/social";
 import DevTreeInput from "../components/DevTreeInput";
-import { toast } from "sonner";
+import { updateProfile } from "../api/DevTreeAPI";
+import type { User } from "../types";
 
 export default function LinkTreeView() {
+  const queryClient = useQueryClient();
+  const user: User = queryClient.getQueryData<User>(["user"])!;
   const [devTreeLinks, setDevTreeLinks] = useState(social);
 
+  const { mutate } = useMutation({
+    mutationFn: updateProfile,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("Perfil actualizado correctamente");
+    },
+  });
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
     const name = e.target.name;
@@ -38,8 +52,12 @@ export default function LinkTreeView() {
       }
       return link;
     });
-    console.log(updatedLinks);
+    
     setDevTreeLinks(updatedLinks);
+    queryClient.setQueryData(["user"], {
+      ...user,
+      links: JSON.stringify(updatedLinks),
+    });
   };
 
   return (
@@ -52,6 +70,12 @@ export default function LinkTreeView() {
           handleEnableLink={handleEnableLink}
         />
       ))}
+      <button
+        className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold "
+        onClick={() => mutate(user)}
+      >
+        Guardar Cambios
+      </button>
     </div>
   );
 }
