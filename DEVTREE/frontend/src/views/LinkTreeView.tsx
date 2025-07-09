@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { validateUrl } from "../utils";
 import { social } from "../data/social";
 import DevTreeInput from "../components/DevTreeInput";
 import { updateProfile } from "../api/DevTreeAPI";
-import type { User } from "../types";
+import type { DevTreeLink, User } from "../types";
 
 export default function LinkTreeView() {
   const queryClient = useQueryClient();
@@ -21,6 +21,28 @@ export default function LinkTreeView() {
       toast.success("Perfil actualizado correctamente");
     },
   });
+
+  useEffect(() => {
+    const updateData = devTreeLinks.map((item) => {
+   
+      const userLink = JSON.parse(user.links).find((link: DevTreeLink) => link.name === item.name);
+      console.log(userLink);
+      if (userLink) {
+       return {
+         ...item,
+         url: userLink.url,
+         enabled: userLink.enabled,
+
+       };
+      }
+      return item;
+    });
+
+    setDevTreeLinks(updateData);
+    
+  }, []);
+
+
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
     const name = e.target.name;
