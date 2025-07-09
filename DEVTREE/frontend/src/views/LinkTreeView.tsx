@@ -26,7 +26,7 @@ export default function LinkTreeView() {
     const updateData = devTreeLinks.map((item) => {
    
       const userLink = JSON.parse(user.links).find((link: DevTreeLink) => link.name === item.name);
-      console.log(userLink);
+
       if (userLink) {
        return {
          ...item,
@@ -56,7 +56,7 @@ export default function LinkTreeView() {
       }
       return link;
     });
-    console.log(updatedLinks);
+
     setDevTreeLinks(updatedLinks);
   };
 
