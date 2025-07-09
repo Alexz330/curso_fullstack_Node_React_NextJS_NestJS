@@ -1,7 +1,8 @@
 import { useState } from "react";
-
+import { validateUrl } from "../utils";
 import { social } from "../data/social";
 import DevTreeInput from "../components/DevTreeInput";
+import { toast } from "sonner";
 
 export default function LinkTreeView() {
   const [devTreeLinks, setDevTreeLinks] = useState(social);
@@ -23,19 +24,23 @@ export default function LinkTreeView() {
     setDevTreeLinks(updatedLinks);
   };
 
-  const handleEnableLink = (socialNetwork:string) =>{
+  const handleEnableLink = (socialNetwork: string) => {
     const updatedLinks = devTreeLinks.map((link) => {
       if (link.name === socialNetwork) {
+        if (!validateUrl(link.url)) {
+          toast.error("URL invalida");
+          return link;
+        }
         return {
           ...link,
-          enabled:!link.enabled,
+          enabled: !link.enabled,
         };
       }
       return link;
     });
     console.log(updatedLinks);
     setDevTreeLinks(updatedLinks);
-  }
+  };
 
   return (
     <div className="space-y-5">
