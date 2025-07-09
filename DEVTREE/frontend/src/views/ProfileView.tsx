@@ -47,8 +47,12 @@ export default function ProfileView() {
     },
   });
 
+
   const handleUserProfileForm = (formData: ProfileForm) => {
-    updateProfileMutation.mutate(formData);
+    const user: User = queryClient.getQueryData<User>(["user"])!;
+    user.handle = formData.handle;
+    user.description = formData.description;
+    updateProfileMutation.mutate(user);
   };
 
   const handleChangeImage = (e:React.ChangeEvent<HTMLInputElement>)=>{
