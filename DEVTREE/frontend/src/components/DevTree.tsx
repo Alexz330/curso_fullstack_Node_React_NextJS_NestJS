@@ -2,17 +2,24 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
 import NavigationTabs from "./NavigationTabs";
 import { Link } from "react-router-dom";
-import type { DevTreeLink, User } from "../types";
-import { useState } from "react";
+import type { DevTreeLink as DevTreeLinkType, User } from "../types";
+import { useEffect, useState } from "react";
+import DevTreeLink from "./DevTreeLink";
 
 type DevTreeProps = {
   data: User;
 };
 
 export default function DevTree({ data }: DevTreeProps) {
-  const  links: DevTreeLink[] = JSON.parse(data.links);
-  const [enabledLinks, setEnabledLinks] = useState(links.filter((link) => link.enabled));
-
+  const links: DevTreeLinkType[] = JSON.parse(data.links);
+  const [enabledLinks, setEnabledLinks] = useState(
+    links.filter((link) => link.enabled)
+  );
+  useEffect(() => {
+    setEnabledLinks(
+      JSON.parse(data.links).filter((link: DevTreeLinkType) => link.enabled)
+    );
+  }, [data]);
   return (
     <>
       <header className="bg-slate-800 py-5">
@@ -58,14 +65,12 @@ export default function DevTree({ data }: DevTreeProps) {
                   className="mx-auto max-w-[250px]"
                 />
               )}
-              <p className="text-center text-lg font-black text-white">
+              <p className="text-center text-lg font-bold text-white">
                 {data.description}
               </p>
               <div className="mt-20 flex flex-col gap-5">
-                {enabledLinks.map(link => (
-                  <a href={link.url} target="_blank" rel="noreferrer noopener" key={link.name}>
-                    <img src={`/social/icon_${link.name}.svg`} alt="" />
-                  </a> 
+                {enabledLinks.map((link) => (
+                  <DevTreeLink key={link.name} link={link} />
                 ))}
               </div>
             </div>
