@@ -1,6 +1,6 @@
 import axios from "axios";
 import api from "../config/axios";
-import type { ProfileForm, User } from "../types";
+import type { ProfileForm, User, UserHandle } from "../types";
 
 export async function getUser() {
   try {
@@ -42,7 +42,7 @@ export async function uploadImage(image: File) {
 
 export async function getUserByHandle(handle: string) {
   try {
-    const { data } = await api.get<User>(`/api/${handle}`);
+    const { data } = await api.get<UserHandle>(`/api/${handle}`);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
