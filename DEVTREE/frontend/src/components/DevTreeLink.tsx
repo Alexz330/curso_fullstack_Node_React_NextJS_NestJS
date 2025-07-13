@@ -1,7 +1,9 @@
-import type { DevTreeLink } from "../types";
+
+
+import type { SocialNetwork } from "../types";
 
 type DevTreeLinkProps = {
-  link: DevTreeLink;
+  link: SocialNetwork;
 };
 
 export default function DevTreeLink({ link }: DevTreeLinkProps) {
