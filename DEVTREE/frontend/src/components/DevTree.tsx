@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
-import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -26,7 +27,7 @@ export default function DevTree({ data }: DevTreeProps) {
     );
   }, [data]);
 
-  const handleDragEnd = () => {};
+  const handleDragEnd = (event: DragEndEvent) => {};
   return (
     <>
       <header className="bg-slate-800 py-5">
