@@ -111,7 +111,7 @@ export default function LinkTreeView() {
             enabled: false,
             id: 0,
           };
-        } else if (link.id > indexToUpdate) {
+        } else if (link.id > indexToUpdate &&(indexToUpdate !== 0 && link.id ===1)) {
           return {
             ...link,
             id: link.id - 1,

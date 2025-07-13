@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import type { User, SocialNetwork } from "../types";
 import { useEffect, useState } from "react";
 import DevTreeLink from "./DevTreeLink";
+import { useQueryClient } from "@tanstack/react-query";
 
 type DevTreeProps = {
   data: User;
@@ -19,7 +20,7 @@ type DevTreeProps = {
 
 export default function DevTree({ data }: DevTreeProps) {
   const [enabledLinks, setEnabledLinks] = useState<SocialNetwork[]>(
-  JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled)
+    JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled)
   );
   useEffect(() => {
     setEnabledLinks(
@@ -27,7 +28,31 @@ export default function DevTree({ data }: DevTreeProps) {
     );
   }, [data]);
 
-  const handleDragEnd = (event: DragEndEvent) => {};
+  const queryClient = useQueryClient();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && over.id) {
+      const prevIndex = enabledLinks.findIndex((link) => link.id === active.id);
+      const nextIndex = enabledLinks.findIndex((link) => link.id === over.id);
+
+      const order = arrayMove(enabledLinks, prevIndex, nextIndex);
+      setEnabledLinks(order);
+
+      const disabledLinks = JSON.parse(data.links).filter(
+        (link: SocialNetwork) => !link.enabled
+      );
+      const links = order.concat(disabledLinks);
+    
+      queryClient.setQueryData(["user"], (prevData: User) => {
+        if (!prevData) return;
+        return {
+          ...prevData,
+          links: JSON.stringify(links),
+        };
+      });
+    }
+  };
   return (
     <>
       <header className="bg-slate-800 py-5">
@@ -81,7 +106,10 @@ export default function DevTree({ data }: DevTreeProps) {
                 onDragEnd={handleDragEnd}
               >
                 <div className="mt-20 flex flex-col gap-5">
-                  <SortableContext items={enabledLinks} strategy={verticalListSortingStrategy}>
+                  <SortableContext
+                    items={enabledLinks}
+                    strategy={verticalListSortingStrategy}
+                  >
                     {enabledLinks.map((link) => (
                       <DevTreeLink key={link.name} link={link} />
                     ))}
