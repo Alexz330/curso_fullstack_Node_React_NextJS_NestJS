@@ -145,3 +145,24 @@ export const uploadImage = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Error subiendo la imagen" });
   }
 };
+
+
+export const getUserByHandle = async (req: Request, res: Response) => {
+  try {
+   const { handle } = req.params;
+   const user = await User.findOne({ handle }).select("-_id -__v -email -password");
+   if (!user) {
+    const error = new Error("Usuario no encontrado");
+    error.name = "UserNotFoundError";
+    res.status(404).json({ error: error.message });
+    return;
+   }
+   res.json(user);
+   return;
+    
+  } catch ( e) {
+    const error = new Error("Hubo un error"); 
+    res.status(500).json({ error: error.message });
+    return;
+  }
+};
