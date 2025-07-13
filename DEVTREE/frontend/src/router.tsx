@@ -7,6 +7,7 @@ import LinkTreeView from "./views/LinkTreeView";
 import ProfileView from "./views/ProfileView";
 import HandleView from "./views/HandleView";
 import NotFoundView from "./views/NotFoundView";
+import HomeView from "./views/HomeView";
 
 export default function Router() {
   return (
@@ -22,6 +23,9 @@ export default function Router() {
         </Route>
         <Route path="/:handle" element={<AuthLayout />}>
           <Route index={true} element={<HandleView />} />
+        </Route>
+        <Route path="/" element={<AuthLayout />}>
+          <Route index={true} element={<HomeView />} />
         </Route>
         <Route path="/404" element={<AuthLayout />}>
           <Route index={true} element={<NotFoundView />} />
