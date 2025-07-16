@@ -24,9 +24,8 @@ export default function Router() {
         <Route path="/:handle" element={<AuthLayout />}>
           <Route index={true} element={<HandleView />} />
         </Route>
-        <Route path="/" element={<AuthLayout />}>
-          <Route index={true} element={<HomeView />} />
-        </Route>
+        <Route index={true} element={<HomeView />} />
+   
         <Route path="/404" element={<AuthLayout />}>
           <Route index={true} element={<NotFoundView />} />
         </Route>
