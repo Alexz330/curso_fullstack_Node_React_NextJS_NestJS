@@ -6,9 +6,14 @@ export default function HomeNavigation() {
     return (
        <>
             <Link className="text-white p-2 uppercase font-black text-xs cursor-pointer"
-            to="/"
+            to="/auth/login"
             >
                 Iniciar Sesión
+            </Link>
+            <Link className="text-white p-2 uppercase font-black text-xs cursor-pointer"
+            to="/auth/register"
+            >
+                Registrarse
             </Link>
        </>
     );
