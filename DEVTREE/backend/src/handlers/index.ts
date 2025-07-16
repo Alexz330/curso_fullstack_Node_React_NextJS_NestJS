@@ -166,3 +166,23 @@ export const getUserByHandle = async (req: Request, res: Response) => {
     return;
   }
 };
+
+export const searchByHandle = async (req: Request, res: Response) => {
+  try {
+    const { handle } = req.body;
+    const userExist = await User.findOne({ handle });
+    if (userExist) {
+     const error = new Error(`${handle} ya está registrado`);
+     error.name = "UserExistsError";
+     res.status(409).json({ error: error.message });
+     return;
+    }
+    res.json({ message:`${handle} esta disponible` });
+    return;
+  } catch (e) {
+    const error = new Error("Hubo un error");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+};
+  
