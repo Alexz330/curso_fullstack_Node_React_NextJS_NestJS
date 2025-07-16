@@ -1,13 +1,16 @@
 @import "tailwindcss";
+@tailwind utilities;
 @plugin "@tailwindcss/forms";
 
-
 @theme {
-    --bg-home: url('/bg.svg');
+  --bg-home: url("/bg.svg");
 }
 
 @layer utilities {
-    .bg-home {
-      background-image: var(--bg-home);
-    }
+  .bg-home {
+    background-image: var(--bg-home);
   }
+  .home-xl {
+    background-size: 50%;
+  }
+}
