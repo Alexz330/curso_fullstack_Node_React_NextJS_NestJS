@@ -22,7 +22,7 @@ export default function SearchForm() {
   });
 
   const handle = watch("handle");
-  const handleSubmitSearch = (data: { handle: string }) => {
+  const handleSubmitSearch = () => {
     const slug = slugify(handle);
     mutation.mutate(slug);
   };
