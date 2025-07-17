@@ -50,7 +50,7 @@ export default function SearchForm() {
         )}
         {mutation.data && (
           <p className="text-center text-cyan-600 font-black">
-             {mutation?.data?.message}  Ir a <Link to="/auth/register">Registro</Link>
+             {mutation?.data?.message}  Ir a <Link to="/auth/register" state={{handle:slugify(handle)}}>Registro</Link>
           </p>
         )}
       </div>
