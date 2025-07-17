@@ -104,7 +104,7 @@ export default function LinkTreeView() {
       const indexToUpdate = links.findIndex(
         (link) => link.name === selectedSocialNetwork?.name
       );
-      updateItems = links.map((link, index) => {
+      updateItems = links.map((link) => {
         if (link.name === selectedSocialNetwork?.name) {
           return {
             ...link,

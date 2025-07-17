@@ -5,7 +5,7 @@ export function classNames(...classes : string[]) {
 
 export function validateUrl(url: string):boolean {
     try {
-       const pattern = new URL(url);
+       new URL(url);
        return true;
     } catch (error) {
         console.log(error);

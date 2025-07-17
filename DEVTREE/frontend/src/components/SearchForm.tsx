@@ -3,7 +3,6 @@ import slugify from "react-slugify";
 import ErrorMessage from "./ErrorMessage";
 import { useMutation } from "@tanstack/react-query";
 import { searchByHandle } from "../api/DevTreeAPI";
-import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
 export default function SearchForm() {
